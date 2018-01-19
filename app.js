@@ -8,8 +8,10 @@ App({
   globalData: {
     userInfo: null,
     windowHeight: 507,
-    onSocketOpen: false,
-    client: null,
-    destination: '/router/game'
+    socket:{
+      onSocketOpen: false,
+      client: null,
+      destination: '/router/game/jdstb',
+    }
   }
 })

@@ -22,6 +22,8 @@ const getSystemInfo = promisify(wx.getSystemInfo);
 // 获得小程序实例
 const app = getApp();
 
+const socket = app.globalData.socket
+
 // 定义页面
 Page({
   data: {
@@ -63,21 +65,25 @@ Page({
     onSocketOpen: false,
 
     // websocket 连接对象
-    client: null
+    client: null,
+    // 自己的性别
+    mySex: null,
+    // 根据性别展示颜色
+    myColor: null
   },
 
   // 页面显示后，进行登录和链接，完成后开始启动游戏服务
   onShow: co.wrap(function* () {
     const self = this
     self.login()
-    var onSocketOpen = app.globalData.onSocketOpen
+    var onSocketOpen = app.globalData.socket.onSocketOpen
     self.setData({ onSocketOpen: onSocketOpen })
 
     if (onSocketOpen) {
       self.setData({
         gameInfo: "Socket joined",
-        client: app.globalData.client,
-        destination: app.globalData.destination
+        client: app.globalData.socket.client,
+        destination: app.globalData.socket.destination
       });
     }
 
@@ -88,17 +94,32 @@ Page({
     this.setData({ gameInfo: " Loading... " });
     const loginResult = yield login();
     const userInfo = yield getUserInfo();
-    const { nickName, avatarUrl } = userInfo.userInfo;
-    this.setData({ myName: nickName, myAvatar: avatarUrl })
+    const { nickName, avatarUrl, gender } = userInfo.userInfo;
+    const myColor = gender == 1 ? 'lightskyblue' : 'lightpink'
+    this.setData({ myName: nickName, myAvatar: avatarUrl, mySex: gender, myColor: myColor })
   }),
 
   // 发送 socket 消息
   sendSocketMsg: function () {
-    var socket = this.data
     socket.client.send(socket.destination, { priority: 9 }, 'Hello whoami !' + new Date().getTime());
+  },
 
+  // 选择出拳
+  handChoice: function (e) {
+    if (!this.data.playing) return;
+    let myChoice = this.data.myChoice + 1;
+    if (myChoice == 4) {
+      myChoice = 1;
+    }
+    this.setData({ myChoice: myChoice });
+    let gameData = new Object();
+    gameData.choice = myChoice;
+    socket.client.send(socket.destination, { priority: 9 }, JSON.stringify(gameData));
+  },
 
-    
+  // 游戏回合结果
+  roundResult: function () {
+
   }
 
 });

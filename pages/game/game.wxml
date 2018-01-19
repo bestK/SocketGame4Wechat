@@ -1,8 +1,8 @@
 <view class="root {{connected && 'connected'}} {{playing && 'playing'}} {{done && 'done'}}">
-    <view class="my-side">
+    <view class="my-side" style='{{myColor}}' >
         <image class="avatar" src="{{myAvatar}}" mode="aspectFill" bindtap='sendSocketMsg' />
 
-        <image class="hand {{win == 'me' && 'win'}}" src="../../images/{{myChoice}}.png" bindtap="switchChoice"></image>
+        <image class="hand {{win == 'me' && 'win'}}" src="../../images/{{myChoice}}.png" bindtap="handChoice"></image>
 
         <text class="score">
             {{myName}}
