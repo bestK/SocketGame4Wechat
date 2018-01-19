@@ -96,6 +96,9 @@ Page({
   sendSocketMsg: function () {
     var socket = this.data
     socket.client.send(socket.destination, { priority: 9 }, 'Hello whoami !' + new Date().getTime());
+
+
+    
   }
 
 });

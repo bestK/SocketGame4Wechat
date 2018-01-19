@@ -10,6 +10,6 @@ App({
     windowHeight: 507,
     onSocketOpen: false,
     client: null,
-    destination: '/order/notification'
+    destination: '/router/game'
   }
 })
