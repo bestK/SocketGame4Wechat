@@ -12,6 +12,7 @@
             连胜 {{myStreak}}
         </text>
     </view>
+
     <view class="your-side {{youHere && 'here'}} {{yourMove && 'move-' + yourMove}}">
         <image class="avatar" src="{{yourAvatar}}" mode="aspectFill" />
 
@@ -24,6 +25,10 @@
         <text class="streak">
             连胜 {{yourStreak}}
         </text>
+    </view>
+
+    <view wx:if='{{!youHere && roomUserTotal!=2}}' class='stay-info'>
+      <text>正在等待对手玩家...</text>
     </view>
 
     <view class="game-info">{{gameInfo}}</view>
